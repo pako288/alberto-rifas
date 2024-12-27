@@ -7,5 +7,14 @@ export default defineConfig({
   build: {
     outDir: 'public', 
   },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'albertorifas.com', // Your API server
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+    },
+  },
 })
 
