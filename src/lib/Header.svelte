@@ -5,6 +5,7 @@
 </script>
 
 <header>
+    <p>test</p>
     <figure>
         <img src={logo} alt="logo" height="90">
     </figure>
