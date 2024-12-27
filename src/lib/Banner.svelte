@@ -58,7 +58,7 @@
 	};
 
 	const printNumbers = async () => {
-		try {
+		
 			const generate = await fetch('/generate-items');
 			const resultado = await generate.json();
 
@@ -67,9 +67,7 @@
 			numbersAvailable = realNumbers.slice(0, -1);
 
 			loadingSpinner = false;
-		} catch (error) {
-			console.log(`Ha ocurrido un error ${error}`)
-		}
+		
 	};
 
 	// AQUI VA EL COMIENZO DE LOS SCRIPTS
