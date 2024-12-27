@@ -59,7 +59,7 @@
 
 	const printNumbers = async () => {
 		try {
-			const generate = await fetch('https://www.albertorifas.com/generate-items');
+			const generate = await fetch('https://albertorifas.com/generate-items');
 			const resultado = await generate.json();
 
 			realNumbers = resultado;
