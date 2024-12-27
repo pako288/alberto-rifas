@@ -72,7 +72,7 @@
 	};
 
 	const otherRequest = () => {
-		fetch('http://albertorifas.com/generate-items')
+		fetch('https://albertorifas.com/generate-items')
   .then(response => {
     if (!response.ok) {
       throw new Error('Network response was not ok');
