@@ -68,7 +68,7 @@
 
 			loadingSpinner = false;
 		} catch (error) {
-			console.log(error);
+			console.log(`Ha ocurrido un error ${error}`)
 		}
 	};
 
