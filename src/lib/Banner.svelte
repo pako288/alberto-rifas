@@ -83,6 +83,7 @@
         console.log(`Se ha producido un error: ${error}`);
     }
 
+	};
 				// realNumbers = resultado;
 
 				// numbersAvailable = realNumbers.slice(0, -1);
