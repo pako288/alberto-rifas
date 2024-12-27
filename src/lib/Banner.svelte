@@ -67,14 +67,16 @@
 				}
 			});
 			const contentType = generate.headers.get('content-type');
-			if (contentType && contentType.includes('application/json')) {
-				const resultado = await generate.json();
+			if (!contentType || !contentType.includes('application/json')) {
+				throw new TypeError("Oops, no es un JSON!");
+				
+			}
+			const resultado = await generate.json();
 				console.log(resultado)
 				loadingSpinner = false;
 				// realNumbers = resultado;
 
 				// numbersAvailable = realNumbers.slice(0, -1);
-			}
 
 			
 			// const resultado = await generate.json();
