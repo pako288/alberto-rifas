@@ -59,21 +59,30 @@
 
 	const printNumbers = async () => {
 		try {
-			const generate = await fetch('https://www.albertorifas.com/items',{
-				method: 'GET',
-				headers: {
-					'Content-Type': 'application/json',
-					'Access-Control-Allow-Origin': '*',
-				}
-			});
-			const contentType = generate.headers.get('content-type');
-			if (!contentType || !contentType.includes('application/json')) {
-				throw new TypeError("Oops, no es un JSON!");
-				
-			}
-			const resultado = await generate.json();
-				console.log(resultado)
-				loadingSpinner = false;
+        const generate = await fetch('https://www.albertorifas.com/items', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                // No necesitas incluir 'Access-Control-Allow-Origin' en la solicitud
+            }
+        });
+
+        const contentType = generate.headers.get('content-type');
+        const responseText = await generate.text(); // Obtén la respuesta como texto
+
+        console.log('Respuesta del servidor:', responseText); // Imprime la respuesta
+
+        if (!contentType || !contentType.includes('application/json')) {
+            throw new TypeError("Oops, no es un JSON!");
+        }
+
+        const resultado = JSON.parse(responseText); // Analiza el texto como JSON
+        console.log(resultado);
+        loadingSpinner = false;
+    } catch (error) {
+        console.log(`Se ha producido un error: ${error}`);
+    }
+
 				// realNumbers = resultado;
 
 				// numbersAvailable = realNumbers.slice(0, -1);
@@ -85,15 +94,12 @@
 			// realNumbers = resultado;
 
 			// numbersAvailable = realNumbers.slice(0, -1);
-		} catch (error) {
-			console.log(`Se ha producido un error ${error}`)
-			
-		}
+		
 		
 			
 
 		
-	};
+	
 
 // 	const otherRequest = () => {
 // 		fetch('https://albertorifas.com/generate-items')
