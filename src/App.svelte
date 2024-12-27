@@ -20,7 +20,7 @@
 
 <main>
   <Header/>
-  <Banner {rangoValue} {ticketValue} {formData} {nuevo}  {fechaSorteo}, {premioMayor} ,{totalZelle}, {findNumber} 
+  <Banner {rangoValue} {ticketValue} {formData}   {fechaSorteo} {premioMayor} {totalZelle} {findNumber} 
 	{numbersAvailable}
 	{selectedTicket}
 	 />
