@@ -60,12 +60,12 @@
 	const printNumbers = async () => {
 		
 			const generate = await fetch('https://albertorifas.com/api/generate-items');
-			const resultado = await generate.json();
+			const resultado = await generate.text();
 
 			console.log(resultado)
-			realNumbers = resultado;
+			// realNumbers = resultado;
 
-			numbersAvailable = realNumbers.slice(0, -1);
+			// numbersAvailable = realNumbers.slice(0, -1);
 
 			loadingSpinner = false;
 		
