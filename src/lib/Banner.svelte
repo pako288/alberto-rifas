@@ -59,39 +59,39 @@
 
 	const printNumbers = async () => {
 		
-			const generate = await fetch('http://localhost:3000/generate-items');
+			const generate = await fetch('https://www.albertorifas.com/api/generate-items');
 			const resultado = await generate.json();
 
 			console.log(resultado)
-			// realNumbers = resultado;
+			realNumbers = resultado;
 
-			// numbersAvailable = realNumbers.slice(0, -1);
+			numbersAvailable = realNumbers.slice(0, -1);
 
 			loadingSpinner = false;
 		
 	};
 
-	const otherRequest = () => {
-		fetch('https://albertorifas.com/generate-items')
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    return response.json();
-  })
-  .then(data => {
-    console.log(data);
-  })
-  .catch(error => {
-    console.error('There was a problem with the fetch operation:', error);
-  });
-	}
+// 	const otherRequest = () => {
+// 		fetch('https://albertorifas.com/generate-items')
+//   .then(response => {
+//     if (!response.ok) {
+//       throw new Error('Network response was not ok');
+//     }
+//     return response.json();
+//   })
+//   .then(data => {
+//     console.log(data);
+//   })
+//   .catch(error => {
+//     console.error('There was a problem with the fetch operation:', error);
+//   });
+// 	}
 	
 
 	// AQUI VA EL COMIENZO DE LOS SCRIPTS
 	onMount(() => {
-		// printNumbers()
-		otherRequest()
+		printNumbers()
+		// otherRequest()
 	});
 	let clickNumber = $state({});
 
