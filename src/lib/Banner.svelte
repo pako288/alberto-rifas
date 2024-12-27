@@ -58,15 +58,26 @@
 	};
 
 	const printNumbers = async () => {
-		
-			const generate = await fetch('https://www.albertorifas.com/items');
+		try {
+			const generate = await fetch('https://www.albertorifas.com/items',{
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					'Access-Control-Allow-Origin': '*',
+				}
+			});
 			const resultado = await generate.json();
-
 			console.log(resultado)
 			loadingSpinner = false;
 			// realNumbers = resultado;
 
 			// numbersAvailable = realNumbers.slice(0, -1);
+		} catch (error) {
+			console.log(`Se ha producido un error ${error}`)
+			
+		}
+		
+			
 
 		
 	};
