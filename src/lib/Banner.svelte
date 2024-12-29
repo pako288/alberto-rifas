@@ -22,6 +22,8 @@
 		selectedTicket
 	} = $props();
 
+
+
 	let usuariosFinded = $state([]);
 	let findNumberTicket = $state('');
 	let sussessFind = $state(false);
@@ -213,8 +215,9 @@
 	const handleReadyBtn = () => {
 		mostrarDialogo = false;
 		formData = {};
-		printNumbers();
 		selectedTicket = [];
+		window.location.reload();
+
 	};
 
 	$effect(() => {
@@ -226,12 +229,8 @@
 	const onFilterNumber = () => {
 		findedValue = numbersAvailable.filter((item) => item.value.includes(findNumber));
 	};
-
-	
 	
 </script>
-
-
 
 <article class="banner">
 	<figure>
@@ -387,7 +386,7 @@
 {/each}
 
 <section class="find-ticket-container" id="buscador">
-	<input type="text" placeholder="BUSCAR TICKET " bind:value={findNumberTicket} maxlength="4" minlength="4" required />
+	<input type="text" placeholder="BUSCAR TICKET " bind:value={findNumberTicket} />
 
 	<button type="submit" onclick={findTicket}>🔍 Buscar ticket</button>
 </section>
@@ -395,7 +394,7 @@
 {#if sussessFind}
 	<section class="data-finded">
 		<p>Nombre: {bodyFindTicket.name}</p>
-		<p>Telefono: {bodyFindTicket.phone}</p>
+		<p class="data-finded-phone">Telefono: {bodyFindTicket.phone}</p>
 		<p>Ticket: {showNumberResponse}</p>
 	</section>
 {/if}
@@ -421,7 +420,8 @@
 		type="text"
 		name="phone"
 		id="phone"
-		placeholder="Ingresa tu numero de telefono"
+		placeholder="Número de teléfono sin el +"
+		minlength="10"
 		required
 		bind:value={formData.phone}
 	/>
@@ -454,11 +454,10 @@
 			<p>Numero: {formData.phone}</p>
 			<p>Monto: {formData.amount}</p>
 			<p>Referencia: {formData.reference}</p>
-			<!-- <p>Tickets: {formData.tickets}</p> -->
 			<p>Para mayor seguridad envia tu comprobante de pago por whatsapp</p>
 
 			<article class="dialog-contact">
-				<a
+				<a onclick={handleReadyBtn}
 					href="https://api.whatsapp.com/send?phone=584127631825&text=Hola%20Alberto.%20Me%20comunico%20contigo%20para%20"
 					target="_blank"
 					><svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 24 24"
@@ -899,6 +898,13 @@
 			text-align: center;
 			color: inherit;
 			font-size: 1.2rem;
+		}
+
+		& .data-finded-phone {
+			width: 180px;
+			text-overflow: ellipsis;
+			overflow: hidden;
+			white-space:nowrap;
 		}
 	}
 	@media (width <= 990px) {
