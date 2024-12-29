@@ -34,13 +34,9 @@
 	// FUNCION BOTON BUSCADOR DE TICKETS
 	const findTicket = async () => {
 		try {
-			const response = await fetch('http://localhost:3000/ticketselected'); // Asegúrate de que la URL sea correcta
-			if (!response.ok) {
-				throw new Error(`Error en la solicitud: ${response.statusText}`);
-			}
-			const users = await response.json(); // Convierte la respuesta a JSON
+			const response = await fetch('https://tests-production-151a.up.railway.app/ticketselected'); // Asegúrate de que la URL sea correcta
 
-			console.log('Usuarios obtenidos:', users); // Maneja los datos como necesites
+			const users = await response.json(); // Convierte la respuesta a JSON
 			bodyFindTicket = [...users];
 
 			const ticketValue = bodyFindTicket.find((item) =>
@@ -49,7 +45,7 @@
 
 			// console.log(`alo` , ticketValue)
 			bodyFindTicket = ticketValue;
-			console.log(bodyFindTicket, `bodyFindTicket`);
+			// console.log(bodyFindTicket, `bodyFindTicket`);
 			showNumberResponse = findNumberTicket;
 			sussessFind = true;
 		} catch (error) {
@@ -59,26 +55,31 @@
 
 	const printNumbers = async () => {
 		try {
-        const generate = await fetch('https://www.albertorifas.com/items', {
+        const generate = await fetch('https://tests-production-151a.up.railway.app/items', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
                 // No necesitas incluir 'Access-Control-Allow-Origin' en la solicitud
             }
         });
+		const resultado = await generate.json();
+		realNumbers = resultado;
+		// console.log(realNumbers)
+		numbersAvailable = realNumbers.slice(0, -1);
+		loadingSpinner = false;
 
-        const contentType = generate.headers.get('content-type');
-        const responseText = await generate.text(); // Obtén la respuesta como texto
+        // const contentType = generate.headers.get('content-type');
+        // const responseText = await generate.text(); // Obtén la respuesta como texto
 
-        console.log('Respuesta del servidor:', responseText); // Imprime la respuesta
+        // console.log('Respuesta del servidor:', responseText); // Imprime la respuesta
 
-        if (!contentType || !contentType.includes('application/json')) {
-            throw new TypeError("Oops, no es un JSON!");
-        }
+        // if (!contentType || !contentType.includes('application/json')) {
+        //     throw new TypeError("Oops, no es un JSON!");
+        // }
 
-        const resultado = JSON.parse(responseText); // Analiza el texto como JSON
-        console.log(resultado);
-        loadingSpinner = false;
+        // const resultado = JSON.parse(responseText); // Analiza el texto como JSON
+        // console.log(resultado);
+        // loadingSpinner = false;
     } catch (error) {
         console.log(`Se ha producido un error: ${error}`);
     }
@@ -119,10 +120,10 @@
 // 	}
 	
 
+// otherRequest()
 	// AQUI VA EL COMIENZO DE LOS SCRIPTS
 	onMount(() => {
 		printNumbers()
-		// otherRequest()
 	});
 	let clickNumber = $state({});
 
@@ -182,7 +183,7 @@
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
-			const response = await fetch('http://localhost:3000/alo', {
+			const response = await fetch('https://tests-production-151a.up.railway.app/alo', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
@@ -225,7 +226,12 @@
 	const onFilterNumber = () => {
 		findedValue = numbersAvailable.filter((item) => item.value.includes(findNumber));
 	};
+
+	
+	
 </script>
+
+
 
 <article class="banner">
 	<figure>
@@ -381,7 +387,7 @@
 {/each}
 
 <section class="find-ticket-container" id="buscador">
-	<input type="text" placeholder="BUSCAR TICKET " bind:value={findNumberTicket} />
+	<input type="text" placeholder="BUSCAR TICKET " bind:value={findNumberTicket} maxlength="4" minlength="4" required />
 
 	<button type="submit" onclick={findTicket}>🔍 Buscar ticket</button>
 </section>
@@ -587,15 +593,20 @@
 		display: grid;
 		width: 100%;
 		margin: 0 auto;
-		grid-template-columns: repeat(auto-fill, minmax(min(50px, 80px), 1fr));
-		grid-template-columns: repeat(7, 1fr);
-		gap: 10px;
-		place-items: center;
+		grid-template-columns: repeat(auto-fit, minmax(min(40px, 100%), 1fr));
+		gap: 20px;
+		/* place-items: center; */
+		/* justify-content: start; */
+		align-items: start;
 		height: 70dvh;
 		overflow-y: scroll;
 		padding: 10px;
 		border: 2px solid red;
 		border-radius: 10px;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: start;
+		align-items: start;
 
 		& p {
 			padding: 10px;
@@ -683,9 +694,8 @@
 			display: grid;
 			/* grid-template-columns: repeat(auto-fill, minmax(min(50px, 100px), 1fr)); */
 			grid-template-columns: repeat(6, 1fr);
-			gap: 20px;
+			gap: 10px;
 			width: 95%;
-			/* background: yellow; */
 		}
 
 		.tickets-selected {

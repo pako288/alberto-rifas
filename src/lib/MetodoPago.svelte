@@ -119,10 +119,10 @@
 		font-size: 24px;
 		height: 300px;
 		line-height: 24px;
-		text-wrap: balance;
+		/* text-wrap: balance; */
 		width: 40%;
-		padding: 0;
-		margin: 0;
+		/* padding: 0; */
+		/* margin: 0; */
 	}
 
 	img {
@@ -143,7 +143,10 @@
 		height: 100px;
 		line-height: 20px;
 	}
-
+h4{
+	text-wrap: balance;
+	font-size: 1.3rem;
+}
 	@media (width <= 990px){
 		.metodo-pago{
 			height: auto;
