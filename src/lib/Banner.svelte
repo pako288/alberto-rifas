@@ -23,7 +23,7 @@
 	} = $props();
 
 
-
+let nameError = $state('');
 	let usuariosFinded = $state([]);
 	let findNumberTicket = $state('');
 	let sussessFind = $state(false);
@@ -69,42 +69,11 @@
 		// console.log(realNumbers)
 		numbersAvailable = realNumbers.slice(0, -1);
 		loadingSpinner = false;
-
-        // const contentType = generate.headers.get('content-type');
-        // const responseText = await generate.text(); // Obtén la respuesta como texto
-
-        // console.log('Respuesta del servidor:', responseText); // Imprime la respuesta
-
-        // if (!contentType || !contentType.includes('application/json')) {
-        //     throw new TypeError("Oops, no es un JSON!");
-        // }
-
-        // const resultado = JSON.parse(responseText); // Analiza el texto como JSON
-        // console.log(resultado);
-        // loadingSpinner = false;
     } catch (error) {
         console.log(`Se ha producido un error: ${error}`);
     }
 
 	};
-				// realNumbers = resultado;
-
-				// numbersAvailable = realNumbers.slice(0, -1);
-
-			
-			// const resultado = await generate.json();
-			// console.log(resultado)
-			// loadingSpinner = false;
-			// realNumbers = resultado;
-
-			// numbersAvailable = realNumbers.slice(0, -1);
-		
-		
-			
-
-		
-	
-
 // 	const otherRequest = () => {
 // 		fetch('https://albertorifas.com/generate-items')
 //   .then(response => {
@@ -128,9 +97,34 @@
 		printNumbers()
 	});
 	let clickNumber = $state({});
+const verifyNumbers =  async() => {
+	try {
+const respuestaa = await fetch('https://tests-production-151a.up.railway.app/api/users');
+ const data = await respuestaa.json();
+	const requestTicket=  data.map((item) => (item.tickets.map((item) => item.value)));
+const allPurchasedNumber = requestTicket.flat()
+		const vww = selectedTicket.map((item) => item.value)
 
-	const handleClick = (id, value, item) => {
-		clickNumber[id] = !clickNumber[id];
+		const alreadyPurchased = vww.some(value => allPurchasedNumber.includes(value));
+        
+        if (alreadyPurchased) {
+            alert('Otra persona ha comprado este ticket');
+			loadingSpinner = true;
+			printNumbers();
+			selectedTicket  = []
+            return;
+        }
+
+	} catch (error) {
+			console.error('Error al obtener usuarios:', error);
+		}
+}
+
+	const handleClick = async(id, value, item) => {
+		
+		
+		
+	clickNumber[id] = !clickNumber[id];
 		const existingItem = selectedTicket.find((selected) => selected.value === value);
 		console.log(existingItem);
 
@@ -144,14 +138,20 @@
 		totalZelle = selectedTicket.length * ticketValue;
 		console.log(totalZelle);
 		formData.amount = totalZelle;
+
+		
+		await verifyNumbers()
+
+	
+		
 	};
 
-	const handleSelect = (id, itemRemove) => {
+	const handleSelectRemove = (id, itemRemove) => {
 		clickNumber[id] = !clickNumber[id];
 		const removeSelected = selectedTicket.filter((item) => item !== itemRemove);
 		selectedTicket = [...removeSelected];
 
-		console.log(selectedTicket);
+		console.log(selectedTicket, `removido`);
 	};
 
 	// ENVIAR TODOS LOS TICKETS SELECCIONADOS FRAO NO BORRAR FUNCIONANDO
@@ -183,7 +183,9 @@
 
 	//FUNCION QUE SE ENVIA A LA BASE DE DATOS TAMBIEN ESTA FUNCIONANDO NO TOCAR
 	const handleSubmit = async (e) => {
+
 		e.preventDefault();
+		// verifyNumbers()
 		try {
 			const response = await fetch('https://tests-production-151a.up.railway.app/alo', {
 				method: 'POST',
@@ -229,6 +231,26 @@
 	const onFilterNumber = () => {
 		findedValue = numbersAvailable.filter((item) => item.value.includes(findNumber));
 	};
+ const handleShareWs = () => {
+	verifyNumbers()
+		mostrarDialogo = true;
+
+   
+ }
+ const handleName = () => {
+    if (formData.name.length < 4) {
+            nameError = 'El nombre debe tener al menos 4 caracteres.';
+        } 
+	if (formData.phone.length < 10) {
+            nameError = 'El número de teléfono debe tener al menos 10 caracteres.';
+        }
+
+		else {
+            nameError = '';
+        }
+ }
+ 
+ 
 	
 </script>
 
@@ -239,8 +261,7 @@
 
 	<section>
 		<h1>
-			El sorteo está programado para el <strong>{fechaSorteo}</strong> siempre que alcancemos el 100%
-			de los tickets vendidos. Pero si vendemos todos los tickets antes adelantamos la fecha del sorteo.
+			La fecha del sorteo se dara a conocer cuando alcanzemos el 80% de los tikets vendidos.
 		</h1>
 		<input
 			disabled
@@ -264,7 +285,7 @@
 		</p>
 
 		<h1>Segundo Premio</h1>
-		<p>200$ en efectivo, transferencia inmediata o zelle por el sorteo SUPER GANA 1:00 PM</p>
+		<p>200$ en efectivo. Transferencia inmediata. Por el sorteo SUPER GANA 4:00 PM</p>
 
 		<p>
 			<strong>9 Premios </strong> de 50$ para las personas que acierten los últimos 3 números del premio
@@ -297,7 +318,7 @@
 	<section class="números-container">
 		{#if findNumber.length > 0}
 			<article class="find-number-box">
-				<section class="generate-numbers">
+				<section class="generate-numbers números">
 					{#each findedValue as item}
 						<p
 							class={clickNumber[item.id] ? 'clickeado' : 'numero-click'}
@@ -365,7 +386,7 @@
 					{#each selectedTicket as item}
 						<p
 							class={`tickets-selected ${clickNumber[item.id] ? 'clickeado' : 'numero-click'}`}
-							onclick={() => handleSelect(item.id, item)}
+							onclick={() => handleSelectRemove(item.id, item)}
 						>
 							{item.value}
 						</p>
@@ -401,6 +422,9 @@
 <MetodoPago {selectedTicket} {ticketValue} {totalZelle} />
 
 <form onsubmit={handleSubmit} class="payment-form">
+	{#if nameError}
+    <p style="color: red;">{nameError}</p>
+{/if}
 	<section>
 		<label for="name"
 			>Nombre y apellido
@@ -412,7 +436,9 @@
 				minlength="4"
 				required
 				bind:value={formData.name}
+				onblur={handleName}
 			/>
+		
 		</label>
 	</section>
 
@@ -424,6 +450,7 @@
 		minlength="10"
 		required
 		bind:value={formData.phone}
+		onblur={handleName}
 	/>
 	<input
 		type="text"
@@ -443,7 +470,7 @@
 	/>
 	<button
 		disabled={selectedTicket.length < 2}
-		onclick={() => (mostrarDialogo = true)}
+		onclick={handleShareWs}
 		class="submit-button">Confirmar y enviar por whatsapp</button
 	>
 
