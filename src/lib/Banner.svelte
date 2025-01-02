@@ -1,10 +1,11 @@
 <script>
 	import { onMount } from 'svelte';
 	import MetodoPago from './MetodoPago.svelte';
-	import mainPoster from '../assets/images/reyes.webp';
+	import mainPoster from '../assets/images/main.webp';
 	import Spinner from './Spinner.svelte';
 
 	let mostrarDialogo = $state(false);
+	let mostrarFactura = $state(false);
 
 	let findedValue = $state('');
 
@@ -45,9 +46,7 @@ let nameError = $state('');
 				item.tickets.map((item) => item.value).includes(findNumberTicket)
 			);
 
-			// console.log(`alo` , ticketValue)
 			bodyFindTicket = ticketValue;
-			// console.log(bodyFindTicket, `bodyFindTicket`);
 			showNumberResponse = findNumberTicket;
 			sussessFind = true;
 		} catch (error) {
@@ -138,11 +137,8 @@ const allPurchasedNumber = requestTicket.flat()
 		totalZelle = selectedTicket.length * ticketValue;
 		console.log(totalZelle);
 		formData.amount = totalZelle;
-
 		
 		await verifyNumbers()
-
-	
 		
 	};
 
@@ -181,8 +177,13 @@ const allPurchasedNumber = requestTicket.flat()
 	// 	}
 	// };
 
+	const handleForm = (e) => {
+	  e.preventDefault();
+	}
+	
+
 	//FUNCION QUE SE ENVIA A LA BASE DE DATOS TAMBIEN ESTA FUNCIONANDO NO TOCAR
-	const handleSubmit = async (e) => {
+	const handleSubmit = async(e) => {
 
 		e.preventDefault();
 		// verifyNumbers()
@@ -201,7 +202,6 @@ const allPurchasedNumber = requestTicket.flat()
 				})
 			});
 
-			console.log('Respuesta del servidor:', response.data);
 		} catch (error) {
 			console.error('Error al realizar la petición:', error);
 		}
@@ -232,8 +232,11 @@ const allPurchasedNumber = requestTicket.flat()
 		findedValue = numbersAvailable.filter((item) => item.value.includes(findNumber));
 	};
  const handleShareWs = () => {
-	verifyNumbers()
-		mostrarDialogo = true;
+	// verifyNumbers()
+	console.log(`clic`)
+	mostrarFactura = true;
+
+	// 	mostrarDialogo = true;
 
    
  }
@@ -261,7 +264,7 @@ const allPurchasedNumber = requestTicket.flat()
 
 	<section>
 		<h1>
-			La fecha del sorteo se dara a conocer cuando alcanzemos el 80% de los tikets vendidos.
+			La fecha del sorteo se dará a conocer cuando alcancemos el 60% de los números vendidos.
 		</h1>
 		<input
 			disabled
@@ -275,7 +278,7 @@ const allPurchasedNumber = requestTicket.flat()
 		<h1>Se han vendido {rangoValue}% de los números</h1>
 
 		<article class="banner-item">
-			<h1 class="title">RAPI RIFA DE REYES</h1>
+			<h1 class="title">GRAN RIFA !!!</h1>
 		</article>
 
 		<h1 class="premio-mayor">PREMIO MAYOR</h1>
@@ -285,11 +288,11 @@ const allPurchasedNumber = requestTicket.flat()
 		</p>
 
 		<h1>Segundo Premio</h1>
-		<p>200$ en efectivo. Transferencia inmediata. Por el sorteo SUPER GANA 4:00 PM</p>
+		<p>200$ en efectivo o transferencia.</p>
 
+		<h1>Tercer premio</h1>
 		<p>
-			<strong>9 Premios </strong> de 50$ para las personas que acierten los últimos 3 números del premio
-			mayor
+			<strong>100$ </strong> a la persona con mas números comprados
 		</p>
 
 		<h1>Valor de cada ticket 20 Bs. ( Compra mínima 2 tickets 40 Bs. )</h1>
@@ -421,7 +424,7 @@ const allPurchasedNumber = requestTicket.flat()
 {/if}
 <MetodoPago {selectedTicket} {ticketValue} {totalZelle} />
 
-<form onsubmit={handleSubmit} class="payment-form">
+<form onsubmit={handleForm} class="payment-form">
 	{#if nameError}
     <p style="color: red;">{nameError}</p>
 {/if}
@@ -474,9 +477,34 @@ const allPurchasedNumber = requestTicket.flat()
 		class="submit-button">Confirmar y enviar por whatsapp</button
 	>
 
+	{#if mostrarFactura}
+		<dialog open={mostrarFactura}>
+			<h2>Tus datos ingresados son:</h2>
+			<article>
+				<p>Nombre: {formData.name}</p>
+				<p>Numero: {formData.phone}</p>
+				<p>Monto: {formData.amount}</p>
+				<p>Referencia: {formData.reference}</p>
+			</article>
+
+			<h2>Desea continuar?</h2>
+			<article class="button-dialogs">
+				<p onclick={() => {
+					mostrarFactura = false,
+					handleSubmit()
+					mostrarDialogo = true
+				}}>Si</p>
+				<p onclick={() => mostrarFactura = false}>No</p>
+
+			</article>
+		</dialog>
+	{/if}
+
 	{#if mostrarDialogo}
+	
 		<dialog open={mostrarDialogo}>
-			<h1>Confirmacion</h1>
+			<h1>! Felicidades! Estas participando.</h1>
+			<h1>Datos de tu compra: </h1>
 			<p>Nombre: {formData.name}</p>
 			<p>Numero: {formData.phone}</p>
 			<p>Monto: {formData.amount}</p>
@@ -514,6 +542,7 @@ const allPurchasedNumber = requestTicket.flat()
 		align-items: center;
 		margin-bottom: 2rem;
 		flex-direction: column;
+		padding: 10px;
 
 		margin: 0;
 		box-sizing: border-box;
@@ -526,11 +555,10 @@ const allPurchasedNumber = requestTicket.flat()
 		}
 	}
 	.premio-mayor {
-		animation: premiomayor 2s infinite ease-in alternate;
 		display: inline-block;
-		font-size: 40px;
+		font-size: 34px;
+		/* animation: premiomayor 2s infinite ease-in alternate; */
 		/* background: red; */
-		text-align: center;
 		/* font-size: 40px; */
 	}
 	.text-bold {
@@ -559,16 +587,17 @@ const allPurchasedNumber = requestTicket.flat()
 			padding: 10px;
 		}
 		& .title {
-			font-family: 'mountains of christmas', serif;
-			font-family: 'Noto Sans', serif;
-			color: transparent;
-			-webkit-text-fill-color: transparent;
-			background: linear-gradient(to left, rgb(5, 112, 53) 50%, rgb(160, 11, 11) 70%);
-			background-clip: text;
+			font-family: "Montserrat", serif;
+			font-size: 2.5rem;
+			font-style: italic;
+			color: inherit;
+			font-weight: 800;
+			/* -webkit-text-fill-color: transparent; */
+			/* background: linear-gradient(to left, rgb(5, 112, 53) 50%, rgb(160, 11, 11) 70%); */
+			/* background-clip: text; */
 			/* mix-blend-mode: screen; */
 			width: max-content;
-			font-weight: 800;
-			animation: colorify 3s infinite linear;
+			/* animation: colorify 3s infinite linear; */
 		}
 	}
 
@@ -610,7 +639,6 @@ const allPurchasedNumber = requestTicket.flat()
 		}
 	}
 	.números-container {
-		/* position: relative; */
 		width: 95%;
 		margin: 0 auto;
 	}
@@ -839,6 +867,7 @@ const allPurchasedNumber = requestTicket.flat()
 		display: flex;
 		flex-direction: column;
 		align-items: center;
+		
 
 		& button {
 			width: 200px;
@@ -932,6 +961,35 @@ const allPurchasedNumber = requestTicket.flat()
 			text-overflow: ellipsis;
 			overflow: hidden;
 			white-space:nowrap;
+		}
+	}
+
+	.button-dialogs {
+		display: flex;
+		gap: 20px;
+		padding: 10px;
+		width: 30%;
+		justify-content: space-evenly;
+		align-items: center;
+
+		& p {
+			padding: 10px;
+			border-radius: 30%;
+			background: var(--terciary-red);
+			color: var(--white);
+			font-size: 1.2rem;
+			/* outline: none; */
+			border: none;
+			transition: 0.4s linear;
+			width: max-content;
+			background: lightskyblue;
+			cursor: pointer;
+		}
+		& p:hover {
+			background: var(--green);
+			color: var(--white);
+			border-radius: 20px;
+			/* padding: 10px; */
 		}
 	}
 	@media (width <= 990px) {
