@@ -183,9 +183,9 @@ const allPurchasedNumber = requestTicket.flat()
 	
 
 	//FUNCION QUE SE ENVIA A LA BASE DE DATOS TAMBIEN ESTA FUNCIONANDO NO TOCAR
-	const handleSubmit = async(e) => {
+	const handleSubmit = async() => {
 
-		e.preventDefault();
+
 		// verifyNumbers()
 		try {
 			const response = await fetch('https://tests-production-151a.up.railway.app/alo', {
