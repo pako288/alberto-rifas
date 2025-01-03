@@ -503,13 +503,19 @@ const allPurchasedNumber = requestTicket.flat()
 	{#if mostrarDialogo}
 	
 		<dialog open={mostrarDialogo}>
-			<h1>! Felicidades! Estas participando.</h1>
+			<h1 style="padding: 10px;">! Felicidades! Estas participando.</h1>
 			<h1>Datos de tu compra: </h1>
 			<p>Nombre: {formData.name}</p>
-			<p>Numero: {formData.phone}</p>
+			<p>Número: {formData.phone}</p>
 			<p>Monto: {formData.amount}</p>
 			<p>Referencia: {formData.reference}</p>
-			<p>Para mayor seguridad envia tu comprobante de pago por whatsapp</p>
+			<section style="display: flex; flex-direction: row; gap: 10px; width: auto; flex-wrap: wrap; max-width: 300px;">
+				{#each selectedTicket as ticket}
+				<p style=" height: max-content; padding: 0;">{ticket.value} ,</p>
+				{/each}
+			</section>
+		
+			<p style="padding: 10px; text-wrap: pretty;">Para mayor seguridad envia tu comprobante de pago por whatsapp</p>
 
 			<article class="dialog-contact">
 				<a onclick={handleReadyBtn}
@@ -730,9 +736,7 @@ const allPurchasedNumber = requestTicket.flat()
 			flex-direction: row;
 			justify-content: space-between;
 			padding: 10px;
-			background: red;
 
-			background: transparent;
 
 			& .selected-content {
 				border: none;
@@ -746,10 +750,10 @@ const allPurchasedNumber = requestTicket.flat()
 
 		& .selectedTicket {
 			display: grid;
-			/* grid-template-columns: repeat(auto-fill, minmax(min(50px, 100px), 1fr)); */
-			grid-template-columns: repeat(6, 1fr);
+			grid-template-columns: repeat(auto-fit, minmax(min(50px, 100%), 1fr));
+			grid-template-columns: repeat(4, 1fr);
 			gap: 10px;
-			width: 95%;
+			/* width: 80%; */
 		}
 
 		.tickets-selected {
@@ -867,20 +871,27 @@ const allPurchasedNumber = requestTicket.flat()
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		
+		justify-content: center;
+		text-wrap: balance;
+		text-align: center;
+		backdrop-filter: blur(5px);
+		background: transparent;
 
 		& button {
 			width: 200px;
 			height: 40px;
+			font-weight: 600;
+			letter-spacing: 1.2px;
 			border-radius: 20px;
-			background: var(--terciary-red);
-			border: var(--green);
+			background:lightblue;
+			border: 3px solid var(--green);
 			outline: none;
 			margin: 10px 0;
 			transition: 0.6 ease-in-out;
+			cursor: pointer;
 
 			&:hover {
-				background: var(--green);
+				/* background: var(--green); */
 				color: var(--white);
 			}
 		}
@@ -903,6 +914,9 @@ const allPurchasedNumber = requestTicket.flat()
 			display: flex;
 			justify-content: center;
 			align-items: center;
+			font-weight: 700;
+			padding: 2px;
+			letter-spacing: 1.2px;
 		}
 	}
 
