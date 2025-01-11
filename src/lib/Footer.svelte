@@ -1,8 +1,8 @@
 <!-- <p>Made with ❤️ by <a href="https://github.com/Pako" target="_blank">Pako</a></p> -->
 <footer>
 	<section>
-		<h3>TU RIFA FLASH</h3>
-		<h4>TU RIFA FLASH</h4>
+		<h3>TICORIFAS</h3>
+		
 	</section>
 	<section>
 		<h3>SECCIONES</h3>

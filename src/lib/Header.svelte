@@ -1,5 +1,5 @@
 <script>
-    import logo from '../assets/images/logob.png';
+    import logo from '../assets/images/logo.webp';
     // import menu from '../assets/images/menu.png';
 
 </script>
@@ -27,11 +27,18 @@
         justify-content: space-around;
         align-items: center;
         height: 100px;
+        gap: 10px;
     }
 
     figure{
         margin: 0;
-        padding: 0;
+        padding: 10px;
+
+        & img{
+            border-radius: 20px;
+            mix-blend-mode: difference;
+            /* mix-blend-mode: screen; */
+        }
     }
 
     a{

@@ -562,7 +562,7 @@ const allPurchasedNumber = requestTicket.flat()
 		& img {
 			height: 700px;
 			border-radius: 10px;
-			aspect-ratio: 16/22;
+			aspect-ratio: 16/28;
 			/* width: 100%; */
 		}
 	}
