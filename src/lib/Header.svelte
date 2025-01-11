@@ -36,7 +36,6 @@
 
         & img{
             border-radius: 20px;
-            mix-blend-mode: difference;
             /* mix-blend-mode: screen; */
         }
     }
