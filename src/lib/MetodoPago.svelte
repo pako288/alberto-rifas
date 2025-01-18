@@ -17,7 +17,7 @@
 			cedula: '20681512',
 			titular: 'Alberto Gonzalez'
 		},
-		{ nombre: 'Zelle', imagen: zelle, correo: 'serviciosgospel@gmail.com', name: 'Ronald Sukdhai' }
+		{ nombre: 'Zelle', imagen: zelle, telefono: `+13179660928`, correo: 'serviciosgospel@gmail.com', name: 'Ronald Sukdhai' }
 	];
 
 	const detectClick = (id) => {
@@ -67,6 +67,7 @@
 		</figure>
 		{#if detectState2}
 		<h4 onclick={handleCopyData}>{dataPago[1].correo}</h4>
+		<h4 onclick={handleCopyData}>{dataPago[1].telefono}</h4>
 		<h4 onclick={handleCopyData}>{dataPago[1].name}</h4>
 		<p>{Math.round(totalZelle * 10) / 10} $</p>
 	{/if}
