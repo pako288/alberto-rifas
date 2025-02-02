@@ -3,6 +3,7 @@
 	import MetodoPago from './MetodoPago.svelte';
 	import mainPoster from '../assets/images/banner.webp';
 	import Spinner from './Spinner.svelte';
+  import Form from './Form.svelte';
 
 	let mostrarDialogo = $state(false);
 	let mostrarFactura = $state(false);
@@ -222,12 +223,12 @@ const allPurchasedNumber = requestTicket.flat()
 
 	};
 // AQUI ESTA EL RANGO VALUE NO BORRAR
-	// $effect(() => {
-	// 	if (numbersAvailable.length > 0) {
-	// 		rangoValue = Math.floor((1 - numbersAvailable.length / 9999) * 100);
-	// 		rangoValue = Math.max(rangoValue, 0);
-	// 	}
-	// });
+	$effect(() => {
+		if (numbersAvailable.length > 0) {
+			rangoValue = Math.floor((1 - numbersAvailable.length / 9999) * 100);
+			rangoValue = Math.max(rangoValue, 0);
+		}
+	});
 	const onFilterNumber = () => {
 		findedValue = numbersAvailable.filter((item) => item.value.includes(findNumber));
 	};
@@ -253,6 +254,23 @@ const allPurchasedNumber = requestTicket.flat()
         }
  }
  
+ const handleChangeInput = () => {
+	if(formData.name.length < 4){
+		nameError = 'El nombre debe tener al menos 4 caracteres.';
+	}
+	if(formData.name.length > 4){
+		nameError = null
+	}
+
+
+	if(formData.phone.length < 11){
+		nameError = 'El número de telefono debe tener al menos 11 caracteres.';
+	}
+	if(formData.phone.length > 11){
+		nameError = null
+	}
+   
+ }
  
 	
 </script>
@@ -266,7 +284,7 @@ const allPurchasedNumber = requestTicket.flat()
 		<h1>
 			La fecha del sorteo se dará a conocer cuando alcancemos el 60% de los números vendidos.
 		</h1>
-		<!-- <input
+		<input
 			disabled
 			class="range"
 			type="range"
@@ -275,7 +293,7 @@ const allPurchasedNumber = requestTicket.flat()
 			max="100"
 			bind:value={rangoValue}
 		/>
-		<h1>Se han vendido {rangoValue}% de los números</h1> -->
+		<h1>Se han vendido {rangoValue}% de los números</h1>
 
 		<article class="banner-item">
 			<h1 class="title">GRAN RIFA !!!</h1>
@@ -299,7 +317,7 @@ const allPurchasedNumber = requestTicket.flat()
 			<strong>100$ </strong> en efectivo o pago movil a la persona con mas números comprados
 		</p>
 
-		<h1>Valor de cada ticket 20 Bs. ( Compra mínima 2 tickets 40 Bs. )</h1>
+		<h1>Valor de cada ticket 20 Bs. ( Compra mínima 3 tickets 60 Bs. O 1$ )</h1>
 		<h4>Whatsapp de soporte</h4>
 		<p class="whatsapp">+50761190062</p>
 	</section>
@@ -378,13 +396,13 @@ const allPurchasedNumber = requestTicket.flat()
 		{#if selectedTicket.length > 0}
 			<section class="flotante">
 				<section class="data-selected">
-					{#if selectedTicket.length > 1}
+					{#if selectedTicket.length > 2}
 						<p class="selected-content">
 							{selectedTicket.length} de {selectedTicket.length} selectedTicket {selectedTicket.length *
 								ticketValue} BS
 						</p>
 					{/if}
-					{#if selectedTicket.length === 1}
+					{#if selectedTicket.length === 2}
 						<p class="selected-content">Agrega otro ticket</p>
 					{/if}
 				</section>
@@ -432,6 +450,10 @@ const allPurchasedNumber = requestTicket.flat()
 	{#if nameError}
     <p style="color: red;">{nameError}</p>
 {/if}
+<!-- <div class="input-field col s12">
+	<input type="text" name="ciudad" id="ciudad" >
+	<label for="ciudad">Ciudad: </label>
+</div>   -->
 	<section>
 		<label for="name"
 			>Nombre y apellido
@@ -443,31 +465,45 @@ const allPurchasedNumber = requestTicket.flat()
 				minlength="4"
 				required
 				bind:value={formData.name}
-				onblur={handleName}
+			
+				onchange={handleChangeInput}
 			/>
 		
 		</label>
 	</section>
 
-	<input
-		type="text"
-		name="phone"
-		id="phone"
-		placeholder="Número de teléfono sin el +"
-		minlength="10"
-		required
-		bind:value={formData.phone}
-		onblur={handleName}
-	/>
-	<input
+	<section>
+		<label for="phone">Telefono
+			<input
+			type="text"
+			name="phone"
+			id="phone"
+			placeholder="Número de teléfono sin el +"
+			minlength="10"
+			required
+			bind:value={formData.phone}
+			onchange={handleChangeInput}
+		/>
+		</label>
+	</section>
+
+	<section>
+		<label for="reference">
+			Referencia
+			<input
 		type="text"
 		name="reference"
 		id="reference"
 		placeholder="Referencia de su pago"
 		required
 		bind:value={formData.reference}
+		
 	/>
-	<input
+		</label>
+	</section>
+	<section>
+		<label for="amount">Monto
+			<input
 		type="text"
 		name="amount"
 		id="amount"
@@ -475,8 +511,13 @@ const allPurchasedNumber = requestTicket.flat()
 		required
 		bind:value={formData.amount}
 	/>
+		</label>
+		
+	</section>
+	
+	
 	<button
-		disabled={selectedTicket.length < 2}
+		disabled={selectedTicket.length < 3}
 		onclick={handleShareWs}
 		class="submit-button">Confirmar y enviar por whatsapp</button
 	>
