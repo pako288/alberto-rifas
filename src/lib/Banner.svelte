@@ -1,7 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
 	import MetodoPago from './MetodoPago.svelte';
-	import mainPoster from '../assets/images/banner.webp';
+	import mainPoster from '../assets/images/banneer.webp';
 	import Spinner from './Spinner.svelte';
   import Form from './Form.svelte';
 
@@ -21,7 +21,8 @@
 		findNumber,
 
 		numbersAvailable,
-		selectedTicket
+		selectedTicket,
+		mainPhone
 	} = $props();
 
 
@@ -317,9 +318,9 @@ const allPurchasedNumber = requestTicket.flat()
 			<strong>100$ </strong> en efectivo o pago movil a la persona con mas números comprados
 		</p>
 
-		<h1>Valor de cada ticket 20 Bs. ( Compra mínima 3 tickets 60 Bs. O 1$ )</h1>
+		<h1>Valor de cada ticket {ticketValue} Bs. ( Compra mínima 3 tickets {ticketValue * 3} Bs. O 1$ )</h1>
 		<h4>Whatsapp de soporte</h4>
-		<p class="whatsapp">+50761190062</p>
+		<p class="whatsapp"> +{mainPhone}</p>
 	</section>
 </article>
 
