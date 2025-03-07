@@ -39,7 +39,7 @@ let nameError = $state('');
 	// FUNCION BOTON BUSCADOR DE TICKETS
 	const findTicket = async () => {
 		try {
-			const response = await fetch('https://tests-production-151a.up.railway.app/ticketselected'); // Asegúrate de que la URL sea correcta
+			const response = await fetch('https://backend-rifas-tico.onrender.com/ticketselected'); // Asegúrate de que la URL sea correcta
 
 			const users = await response.json(); // Convierte la respuesta a JSON
 			bodyFindTicket = [...users];
@@ -58,7 +58,7 @@ let nameError = $state('');
 
 	const printNumbers = async () => {
 		try {
-        const generate = await fetch('https://tests-production-151a.up.railway.app/items', {
+        const generate = await fetch('https://backend-rifas-tico.onrender.com/items', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -100,7 +100,7 @@ let nameError = $state('');
 	let clickNumber = $state({});
 const verifyNumbers =  async() => {
 	try {
-const respuestaa = await fetch('https://tests-production-151a.up.railway.app/api/users');
+const respuestaa = await fetch('https://backend-rifas-tico.onrender.com/api/users');
  const data = await respuestaa.json();
 	const requestTicket=  data.map((item) => (item.tickets.map((item) => item.value)));
 const allPurchasedNumber = requestTicket.flat()
@@ -190,7 +190,7 @@ const allPurchasedNumber = requestTicket.flat()
 
 		// verifyNumbers()
 		try {
-			const response = await fetch('https://tests-production-151a.up.railway.app/alo', {
+			const response = await fetch('https://backend-rifas-tico.onrender.com/alo', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
